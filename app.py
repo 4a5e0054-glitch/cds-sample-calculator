@@ -34,13 +34,15 @@ remain  = st.number_input("剩餘試吃量", min_value=0.0, step=0.5, format="%.
 
 # --- 計算函式 ---
 def elapsed_hours_from_start(start_t: time) -> float:
-    """用『今天的現在時間』與 start_t 計算經過小時數，若跨午夜則自動補 24 小時。"""
     now = datetime.now(ZoneInfo("Asia/Taipei"))
-    start_dt = datetime.combine(now.date(), start_t)
+    start_dt = datetime.combine(now.date(), start_t).replace(tzinfo=ZoneInfo("Asia/Taipei"))
+
     delta = now - start_dt
     hours = delta.total_seconds() / 3600.0
+
     if hours < 0:
         hours += 24.0
+
     return hours
 
 # --- 計算 & 顯示 ---
@@ -71,5 +73,6 @@ else:
         st.error("❌ 試吃品不足（照目前速度，可能不夠）")
     else:
         st.success("✅ 試吃品足夠（照目前速度，應該夠用）")
+
 
 
