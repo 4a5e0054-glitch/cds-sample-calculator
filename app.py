@@ -1,5 +1,7 @@
 import streamlit as st
 from datetime import datetime, time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 st.set_page_config(page_title="試吃用量計算", layout="centered")
 st.title("CDS 試吃用量計算器")
@@ -34,7 +36,7 @@ remain  = st.number_input("剩餘試吃量", min_value=0.0, step=0.5, format="%.
 # --- 計算函式 ---
 def elapsed_hours_from_start(start_t: time) -> float:
     """用『今天的現在時間』與 start_t 計算經過小時數，若跨午夜則自動補 24 小時。"""
-    now = datetime.now()
+    now = datetime.now(ZoneInfo("Asia/Taipei"))
     start_dt = datetime.combine(now.date(), start_t)
     delta = now - start_dt
     hours = delta.total_seconds() / 3600.0
@@ -70,3 +72,4 @@ else:
         st.error("❌ 試吃品不足（照目前速度，可能不夠）")
     else:
         st.success("✅ 試吃品足夠（照目前速度，應該夠用）")
+
