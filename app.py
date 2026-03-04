@@ -8,7 +8,7 @@ st.title("CDS 試吃用量計算器")
 DAY_HOURS = 10.5  # 全天固定時數
 
 # --- 開始時間：兩顆按鈕 ---
-st.subheader("開始時間（按一下就填好）")
+st.subheader("開始時間")
 
 if "start_time" not in st.session_state:
     st.session_state.start_time = None
@@ -73,6 +73,7 @@ else:
         st.error("❌ 試吃品不足（照目前速度，可能不夠）")
     else:
         st.success("✅ 試吃品足夠（照目前速度，應該夠用）")
+
 
 
 
