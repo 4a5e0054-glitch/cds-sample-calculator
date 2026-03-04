@@ -41,7 +41,7 @@ def elapsed_hours_from_start(start_t: time) -> float:
     hours = delta.total_seconds() / 3600.0
 
     if hours < 0:
-        hours += 24.0
+        return 0
 
     return hours
 
@@ -73,6 +73,7 @@ else:
         st.error("❌ 試吃品不足（照目前速度，可能不夠）")
     else:
         st.success("✅ 試吃品足夠（照目前速度，應該夠用）")
+
 
 
 
