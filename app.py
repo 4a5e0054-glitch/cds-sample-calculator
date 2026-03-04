@@ -62,7 +62,7 @@ else:
     predict = per_hour * DAY_HOURS
     diff = predict - initial  # 預估差額 = 預估用量 - 初始量
 
-    st.write(f"目前時間：{datetime.now().strftime('%H:%M:%S')}")
+    st.write(f"目前時間：{datetime.now(ZoneInfo('Asia/Taipei')).strftime('%H:%M:%S')}")
     st.write(f"已進行時間_小時：{elapsed:.2f}")
     st.write(f"已使用量：{used:.2f}")
     st.write(f"每小時用量：{per_hour:.2f}")
@@ -73,6 +73,7 @@ else:
         st.error("❌ 試吃品不足（照目前速度，可能不夠）")
     else:
         st.success("✅ 試吃品足夠（照目前速度，應該夠用）")
+
 
 
 
