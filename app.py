@@ -11,26 +11,44 @@ DAY_HOURS = 10.5  # 全天固定時數
 st.subheader("開始時間")
 
 if "start_time" not in st.session_state:
-    st.session_state.start_time = None
+    st.session_state.start_time = time(9, 15)
 
-c1, c2 = st.columns(2)
-with c1:
-    if st.button("09:15"):
-        st.session_state.start_time = time(9, 15)
-with c2:
-    if st.button("08:45"):
-        st.session_state.start_time = time(8, 45)
+st.session_state.start_time = st.time_input(
+    "請選擇開始時間",
+    value=st.session_state.start_time,
+    step=300
+)
 
 # 顯示目前選到的開始時間
-if st.session_state.start_time is None:
-    st.info("請先按 09:15 或 08:45 選擇開始時間")
-else:
-    st.success(f"已選擇開始時間：{st.session_state.start_time.strftime('%H:%M')}")
+st.success(f"已選擇開始時間：{st.session_state.start_time.strftime('%H:%M')}")
+
+# 目前時間
+now = datetime.now(ZoneInfo("Asia/Taipei"))
+
+# 把開始時間組成今天的 datetime
+start_dt = datetime.combine(now.date(), st.session_state.start_time, tzinfo=ZoneInfo("Asia/Taipei"))
+
+# 計算已過分鐘
+elapsed_minutes = max(0, int((now - start_dt).total_seconds() / 60))
+
+st.write(f"已過分鐘：{elapsed_minutes} 分")
 
 # --- 輸入 ---
 st.subheader("輸入")
 initial = st.number_input("初始試吃量", min_value=0.0, step=0.5, format="%.2f")
 remain  = st.number_input("剩餘試吃量", min_value=0.0, step=0.5, format="%.2f")
+
+# 已使用量
+used_amount = initial - remain
+
+# 平均每小時使用量
+if elapsed_minutes > 0:
+    used_per_hour = used_amount / elapsed_minutes * 60
+else:
+    used_per_hour = 0
+
+st.write(f"已使用量：{used_amount:.2f}")
+st.write(f"平均每小時使用量：{used_per_hour:.2f}")
 
 # --- 計算函式 ---
 def elapsed_hours_from_start(start_t: time) -> float:
